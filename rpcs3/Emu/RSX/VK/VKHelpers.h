@@ -88,6 +88,7 @@ namespace vk
 	class physical_device;
 	class command_buffer;
 	class image;
+	struct image_view;
 	struct buffer;
 	struct data_heap;
 	class mem_allocator_base;
@@ -116,7 +117,7 @@ namespace vk
 	VkImageAspectFlags get_aspect_flags(VkFormat format);
 
 	VkSampler null_sampler();
-	VkImageView null_image_view(vk::command_buffer&);
+	image_view* null_image_view(vk::command_buffer&);
 	image* get_typeless_helper(VkFormat format, u32 requested_width, u32 requested_height);
 	buffer* get_scratch_buffer();
 
@@ -163,11 +164,10 @@ namespace vk
 			VkFilter filter = VK_FILTER_LINEAR, VkFormat src_format = VK_FORMAT_UNDEFINED, VkFormat dst_format = VK_FORMAT_UNDEFINED);
 
 	std::pair<VkFormat, VkComponentMapping> get_compatible_surface_format(rsx::surface_color_format color_format);
-	size_t get_render_pass_location(VkFormat color_surface_format, VkFormat depth_stencil_format, u8 color_surface_count);
 
 	//Texture barrier applies to a texture to ensure writes to it are finished before any reads are attempted to avoid RAW hazards
-	void insert_texture_barrier(VkCommandBuffer cmd, VkImage image, VkImageLayout layout, VkImageSubresourceRange range);
-	void insert_texture_barrier(VkCommandBuffer cmd, vk::image *image);
+	void insert_texture_barrier(VkCommandBuffer cmd, VkImage image, VkImageLayout current_layout, VkImageLayout new_layout, VkImageSubresourceRange range);
+	void insert_texture_barrier(VkCommandBuffer cmd, vk::image *image, VkImageLayout new_layout);
 
 	void insert_buffer_memory_barrier(VkCommandBuffer cmd, VkBuffer buffer, VkDeviceSize offset, VkDeviceSize length,
 			VkPipelineStageFlags src_stage, VkPipelineStageFlags dst_stage, VkAccessFlags src_mask, VkAccessFlags dst_mask);
@@ -436,6 +436,9 @@ namespace vk
 			const auto gpu_name = get_name();
 			if (gpu_name.find("Radeon") != std::string::npos)
 			{
+#ifndef _WIN32
+				LOG_ERROR(RSX, "Using non RADV drivers on linux currently incurs a ~40% performance loss due to a window resizing workaround. Using RADV is recommended.");
+#endif
 				return driver_vendor::AMD;
 			}
 
@@ -1055,6 +1058,11 @@ namespace vk
 		u32 depth() const
 		{
 			return info.extent.depth;
+		}
+
+		u8 samples() const
+		{
+			return u8(info.samples);
 		}
 
 		VkFormat format() const
@@ -2024,11 +2032,8 @@ public:
 #endif
 				break;
 			case driver_vendor::AMD:
-#ifdef _WIN32
 				break;
-#endif
 			case driver_vendor::INTEL:
-				// Untested
 			case driver_vendor::RADV:
 				m_wm_reports_flag = true;
 				break;
@@ -2601,43 +2606,66 @@ public:
 
 	class descriptor_pool
 	{
-		VkDescriptorPool pool = nullptr;
-		const vk::render_device *owner = nullptr;
+		const vk::render_device *m_owner = nullptr;
+
+		std::vector<VkDescriptorPool> m_device_pools;
+		VkDescriptorPool m_current_pool_handle = VK_NULL_HANDLE;
+		u32 m_current_pool_index = 0;
 
 	public:
 		descriptor_pool() {}
 		~descriptor_pool() {}
 
-		void create(const vk::render_device &dev, VkDescriptorPoolSize *sizes, u32 size_descriptors_count)
+		void create(const vk::render_device &dev, VkDescriptorPoolSize *sizes, u32 size_descriptors_count, u32 max_sets, u8 subpool_count)
 		{
+			verify(HERE), subpool_count;
+
 			VkDescriptorPoolCreateInfo infos = {};
 			infos.flags = 0;
-			infos.maxSets = DESCRIPTOR_MAX_DRAW_CALLS;
+			infos.maxSets = max_sets;
 			infos.poolSizeCount = size_descriptors_count;
 			infos.pPoolSizes = sizes;
 			infos.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
 
-			owner = &dev;
-			CHECK_RESULT(vkCreateDescriptorPool(dev, &infos, nullptr, &pool));
+			m_owner = &dev;
+			m_device_pools.resize(subpool_count);
+
+			for (auto &pool : m_device_pools)
+			{
+				CHECK_RESULT(vkCreateDescriptorPool(dev, &infos, nullptr, &pool));
+			}
+
+			m_current_pool_handle = m_device_pools[0];
 		}
 
 		void destroy()
 		{
-			if (!pool) return;
+			if (m_device_pools.empty()) return;
 
-			vkDestroyDescriptorPool((*owner), pool, nullptr);
-			owner = nullptr;
-			pool = nullptr;
+			for (auto &pool : m_device_pools)
+			{
+				vkDestroyDescriptorPool((*m_owner), pool, nullptr);
+				pool = VK_NULL_HANDLE;
+			}
+
+			m_owner = nullptr;
 		}
 
 		bool valid()
 		{
-			return (pool != nullptr);
+			return (!m_device_pools.empty());
 		}
 
 		operator VkDescriptorPool()
 		{
-			return pool;
+			return m_current_pool_handle;
+		}
+
+		void reset(VkDescriptorPoolResetFlags flags)
+		{
+			m_current_pool_index = (m_current_pool_index + 1) % u32(m_device_pools.size());
+			m_current_pool_handle = m_device_pools[m_current_pool_index];
+			CHECK_RESULT(vkResetDescriptorPool(*m_owner, m_current_pool_handle, flags));
 		}
 	};
 
