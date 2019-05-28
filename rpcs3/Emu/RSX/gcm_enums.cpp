@@ -48,9 +48,9 @@ rsx::primitive_type rsx::to_primitive_type(u8 in)
 
 enum
 {
-	CELL_GCM_WINDOW_ORIGIN_TOP = 0,
-	CELL_GCM_WINDOW_ORIGIN_BOTTOM = 1,
-	CELL_GCM_WINDOW_PIXEL_CENTER_HALF = 0,
+	CELL_GCM_WINDOW_ORIGIN_TOP           = 0,
+	CELL_GCM_WINDOW_ORIGIN_BOTTOM        = 1,
+	CELL_GCM_WINDOW_PIXEL_CENTER_HALF    = 0,
 	CELL_GCM_WINDOW_PIXEL_CENTER_INTEGER = 1,
 };
 
@@ -78,37 +78,29 @@ rsx::comparison_function rsx::to_comparison_function(u16 in)
 {
 	switch (in)
 	{
-	case CELL_GCM_TEXTURE_ZFUNC_NEVER & CELL_GCM_SCULL_SFUNC_NEVER:
-	case CELL_GCM_NEVER:
-		return rsx::comparison_function::never;
+	case CELL_GCM_TEXTURE_ZFUNC_NEVER& CELL_GCM_SCULL_SFUNC_NEVER:
+	case CELL_GCM_NEVER: return rsx::comparison_function::never;
 
-	case CELL_GCM_TEXTURE_ZFUNC_LESS & CELL_GCM_SCULL_SFUNC_LESS:
-	case CELL_GCM_LESS:
-		return rsx::comparison_function::less;
+	case CELL_GCM_TEXTURE_ZFUNC_LESS& CELL_GCM_SCULL_SFUNC_LESS:
+	case CELL_GCM_LESS: return rsx::comparison_function::less;
 
-	case CELL_GCM_TEXTURE_ZFUNC_EQUAL & CELL_GCM_SCULL_SFUNC_EQUAL:
-	case CELL_GCM_EQUAL:
-		return rsx::comparison_function::equal;
+	case CELL_GCM_TEXTURE_ZFUNC_EQUAL& CELL_GCM_SCULL_SFUNC_EQUAL:
+	case CELL_GCM_EQUAL: return rsx::comparison_function::equal;
 
-	case CELL_GCM_TEXTURE_ZFUNC_LEQUAL & CELL_GCM_SCULL_SFUNC_LEQUAL:
-	case CELL_GCM_LEQUAL:
-		return rsx::comparison_function::less_or_equal;
+	case CELL_GCM_TEXTURE_ZFUNC_LEQUAL& CELL_GCM_SCULL_SFUNC_LEQUAL:
+	case CELL_GCM_LEQUAL: return rsx::comparison_function::less_or_equal;
 
-	case CELL_GCM_TEXTURE_ZFUNC_GREATER & CELL_GCM_SCULL_SFUNC_GREATER:
-	case CELL_GCM_GREATER:
-		return rsx::comparison_function::greater;
+	case CELL_GCM_TEXTURE_ZFUNC_GREATER& CELL_GCM_SCULL_SFUNC_GREATER:
+	case CELL_GCM_GREATER: return rsx::comparison_function::greater;
 
-	case CELL_GCM_TEXTURE_ZFUNC_NOTEQUAL & CELL_GCM_SCULL_SFUNC_NOTEQUAL:
-	case CELL_GCM_NOTEQUAL:
-		return rsx::comparison_function::not_equal;
+	case CELL_GCM_TEXTURE_ZFUNC_NOTEQUAL& CELL_GCM_SCULL_SFUNC_NOTEQUAL:
+	case CELL_GCM_NOTEQUAL: return rsx::comparison_function::not_equal;
 
-	case CELL_GCM_TEXTURE_ZFUNC_GEQUAL & CELL_GCM_SCULL_SFUNC_GEQUAL:
-	case CELL_GCM_GEQUAL:
-		return rsx::comparison_function::greater_or_equal;
+	case CELL_GCM_TEXTURE_ZFUNC_GEQUAL& CELL_GCM_SCULL_SFUNC_GEQUAL:
+	case CELL_GCM_GEQUAL: return rsx::comparison_function::greater_or_equal;
 
-	case CELL_GCM_TEXTURE_ZFUNC_ALWAYS & CELL_GCM_SCULL_SFUNC_ALWAYS:
-	case CELL_GCM_ALWAYS:
-		return rsx::comparison_function::always;
+	case CELL_GCM_TEXTURE_ZFUNC_ALWAYS& CELL_GCM_SCULL_SFUNC_ALWAYS:
+	case CELL_GCM_ALWAYS: return rsx::comparison_function::always;
 	}
 	fmt::throw_exception("Unknown comparison function 0x%x" HERE, in);
 }
@@ -325,7 +317,6 @@ namespace rsx
 		fmt::throw_exception("Unexpected enum found" HERE);
 	}
 
-
 	std::string to_string(blend_equation op)
 	{
 		switch (op)
@@ -395,8 +386,6 @@ namespace rsx
 		}
 		fmt::throw_exception("Unexpected enum found" HERE);
 	}
-
-
 
 	std::string to_string(surface_depth_format format)
 	{
@@ -510,65 +499,65 @@ enum
 {
 	// Surface Target
 	CELL_GCM_SURFACE_TARGET_NONE = 0,
-	CELL_GCM_SURFACE_TARGET_0 = 1,
-	CELL_GCM_SURFACE_TARGET_1 = 2,
+	CELL_GCM_SURFACE_TARGET_0    = 1,
+	CELL_GCM_SURFACE_TARGET_1    = 2,
 	CELL_GCM_SURFACE_TARGET_MRT1 = 0x13,
 	CELL_GCM_SURFACE_TARGET_MRT2 = 0x17,
 	CELL_GCM_SURFACE_TARGET_MRT3 = 0x1f,
 
 	// Surface Depth
-	CELL_GCM_SURFACE_Z16 = 1,
+	CELL_GCM_SURFACE_Z16   = 1,
 	CELL_GCM_SURFACE_Z24S8 = 2,
 
 	// Surface Antialias
-	CELL_GCM_SURFACE_CENTER_1 = 0,
+	CELL_GCM_SURFACE_CENTER_1            = 0,
 	CELL_GCM_SURFACE_DIAGONAL_CENTERED_2 = 3,
-	CELL_GCM_SURFACE_SQUARE_CENTERED_4 = 4,
-	CELL_GCM_SURFACE_SQUARE_ROTATED_4 = 5,
+	CELL_GCM_SURFACE_SQUARE_CENTERED_4   = 4,
+	CELL_GCM_SURFACE_SQUARE_ROTATED_4    = 5,
 
 	// Surface format
 	CELL_GCM_SURFACE_X1R5G5B5_Z1R5G5B5 = 1,
 	CELL_GCM_SURFACE_X1R5G5B5_O1R5G5B5 = 2,
-	CELL_GCM_SURFACE_R5G6B5 = 3,
+	CELL_GCM_SURFACE_R5G6B5            = 3,
 	CELL_GCM_SURFACE_X8R8G8B8_Z8R8G8B8 = 4,
 	CELL_GCM_SURFACE_X8R8G8B8_O8R8G8B8 = 5,
-	CELL_GCM_SURFACE_A8R8G8B8 = 8,
-	CELL_GCM_SURFACE_B8 = 9,
-	CELL_GCM_SURFACE_G8B8 = 10,
-	CELL_GCM_SURFACE_F_W16Z16Y16X16 = 11,
-	CELL_GCM_SURFACE_F_W32Z32Y32X32 = 12,
-	CELL_GCM_SURFACE_F_X32 = 13,
+	CELL_GCM_SURFACE_A8R8G8B8          = 8,
+	CELL_GCM_SURFACE_B8                = 9,
+	CELL_GCM_SURFACE_G8B8              = 10,
+	CELL_GCM_SURFACE_F_W16Z16Y16X16    = 11,
+	CELL_GCM_SURFACE_F_W32Z32Y32X32    = 12,
+	CELL_GCM_SURFACE_F_X32             = 13,
 	CELL_GCM_SURFACE_X8B8G8R8_Z8B8G8R8 = 14,
 	CELL_GCM_SURFACE_X8B8G8R8_O8B8G8R8 = 15,
-	CELL_GCM_SURFACE_A8B8G8R8 = 16,
+	CELL_GCM_SURFACE_A8B8G8R8          = 16,
 
 	// Wrap
-	CELL_GCM_TEXTURE_WRAP = 1,
-	CELL_GCM_TEXTURE_MIRROR = 2,
-	CELL_GCM_TEXTURE_CLAMP_TO_EDGE = 3,
-	CELL_GCM_TEXTURE_BORDER = 4,
-	CELL_GCM_TEXTURE_CLAMP = 5,
+	CELL_GCM_TEXTURE_WRAP                      = 1,
+	CELL_GCM_TEXTURE_MIRROR                    = 2,
+	CELL_GCM_TEXTURE_CLAMP_TO_EDGE             = 3,
+	CELL_GCM_TEXTURE_BORDER                    = 4,
+	CELL_GCM_TEXTURE_CLAMP                     = 5,
 	CELL_GCM_TEXTURE_MIRROR_ONCE_CLAMP_TO_EDGE = 6,
-	CELL_GCM_TEXTURE_MIRROR_ONCE_BORDER = 7,
-	CELL_GCM_TEXTURE_MIRROR_ONCE_CLAMP = 8,
+	CELL_GCM_TEXTURE_MIRROR_ONCE_BORDER        = 7,
+	CELL_GCM_TEXTURE_MIRROR_ONCE_CLAMP         = 8,
 
 	// Max Anisotropy
-	CELL_GCM_TEXTURE_MAX_ANISO_1 = 0,
-	CELL_GCM_TEXTURE_MAX_ANISO_2 = 1,
-	CELL_GCM_TEXTURE_MAX_ANISO_4 = 2,
-	CELL_GCM_TEXTURE_MAX_ANISO_6 = 3,
-	CELL_GCM_TEXTURE_MAX_ANISO_8 = 4,
+	CELL_GCM_TEXTURE_MAX_ANISO_1  = 0,
+	CELL_GCM_TEXTURE_MAX_ANISO_2  = 1,
+	CELL_GCM_TEXTURE_MAX_ANISO_4  = 2,
+	CELL_GCM_TEXTURE_MAX_ANISO_6  = 3,
+	CELL_GCM_TEXTURE_MAX_ANISO_8  = 4,
 	CELL_GCM_TEXTURE_MAX_ANISO_10 = 5,
 	CELL_GCM_TEXTURE_MAX_ANISO_12 = 6,
 	CELL_GCM_TEXTURE_MAX_ANISO_16 = 7,
 
 	// Texture Filter
-	CELL_GCM_TEXTURE_NEAREST = 1,
-	CELL_GCM_TEXTURE_LINEAR = 2,
+	CELL_GCM_TEXTURE_NEAREST         = 1,
+	CELL_GCM_TEXTURE_LINEAR          = 2,
 	CELL_GCM_TEXTURE_NEAREST_NEAREST = 3,
-	CELL_GCM_TEXTURE_LINEAR_NEAREST = 4,
-	CELL_GCM_TEXTURE_NEAREST_LINEAR = 5,
-	CELL_GCM_TEXTURE_LINEAR_LINEAR = 6,
+	CELL_GCM_TEXTURE_LINEAR_NEAREST  = 4,
+	CELL_GCM_TEXTURE_NEAREST_LINEAR  = 5,
+	CELL_GCM_TEXTURE_LINEAR_LINEAR   = 6,
 	CELL_GCM_TEXTURE_CONVOLUTION_MIN = 7,
 	CELL_GCM_TEXTURE_CONVOLUTION_MAG = 4,
 };
@@ -619,7 +608,6 @@ rsx::texture_minify_filter rsx::to_texture_minify_filter(u8 in)
 	}
 	fmt::throw_exception("Unknown minify filter 0x%x" HERE, in);
 }
-
 
 rsx::texture_magnify_filter rsx::to_texture_magnify_filter(u8 in)
 {
@@ -708,14 +696,14 @@ rsx::stencil_op rsx::to_stencil_op(u16 in)
 
 enum
 {
-	CELL_GCM_FUNC_ADD = 0x8006,
-	CELL_GCM_MIN = 0x8007,
-	CELL_GCM_MAX = 0x8008,
-	CELL_GCM_FUNC_SUBTRACT = 0x800A,
-	CELL_GCM_FUNC_REVERSE_SUBTRACT = 0x800B,
+	CELL_GCM_FUNC_ADD                     = 0x8006,
+	CELL_GCM_MIN                          = 0x8007,
+	CELL_GCM_MAX                          = 0x8008,
+	CELL_GCM_FUNC_SUBTRACT                = 0x800A,
+	CELL_GCM_FUNC_REVERSE_SUBTRACT        = 0x800B,
 	CELL_GCM_FUNC_REVERSE_SUBTRACT_SIGNED = 0x0000F005,
-	CELL_GCM_FUNC_ADD_SIGNED = 0x0000F006,
-	CELL_GCM_FUNC_REVERSE_ADD_SIGNED = 0x0000F007,
+	CELL_GCM_FUNC_ADD_SIGNED              = 0x0000F006,
+	CELL_GCM_FUNC_REVERSE_ADD_SIGNED      = 0x0000F007,
 };
 
 rsx::blend_equation rsx::to_blend_equation(u16 in)
@@ -730,24 +718,25 @@ rsx::blend_equation rsx::to_blend_equation(u16 in)
 	case CELL_GCM_FUNC_REVERSE_SUBTRACT_SIGNED: return rsx::blend_equation::reverse_substract_signed;
 	case CELL_GCM_FUNC_ADD_SIGNED: return rsx::blend_equation::add_signed;
 	case CELL_GCM_FUNC_REVERSE_ADD_SIGNED: return rsx::blend_equation::reverse_add_signed;
+	case 0: return rsx::blend_equation::min;
 	}
 	fmt::throw_exception("Unknown blend eq 0x%x" HERE, in);
 }
 
 enum
 {
-	CELL_GCM_SRC_COLOR = 0x0300,
-	CELL_GCM_ONE_MINUS_SRC_COLOR = 0x0301,
-	CELL_GCM_SRC_ALPHA = 0x0302,
-	CELL_GCM_ONE_MINUS_SRC_ALPHA = 0x0303,
-	CELL_GCM_DST_ALPHA = 0x0304,
-	CELL_GCM_ONE_MINUS_DST_ALPHA = 0x0305,
-	CELL_GCM_DST_COLOR = 0x0306,
-	CELL_GCM_ONE_MINUS_DST_COLOR = 0x0307,
-	CELL_GCM_SRC_ALPHA_SATURATE = 0x0308,
-	CELL_GCM_CONSTANT_COLOR = 0x8001,
+	CELL_GCM_SRC_COLOR                = 0x0300,
+	CELL_GCM_ONE_MINUS_SRC_COLOR      = 0x0301,
+	CELL_GCM_SRC_ALPHA                = 0x0302,
+	CELL_GCM_ONE_MINUS_SRC_ALPHA      = 0x0303,
+	CELL_GCM_DST_ALPHA                = 0x0304,
+	CELL_GCM_ONE_MINUS_DST_ALPHA      = 0x0305,
+	CELL_GCM_DST_COLOR                = 0x0306,
+	CELL_GCM_ONE_MINUS_DST_COLOR      = 0x0307,
+	CELL_GCM_SRC_ALPHA_SATURATE       = 0x0308,
+	CELL_GCM_CONSTANT_COLOR           = 0x8001,
 	CELL_GCM_ONE_MINUS_CONSTANT_COLOR = 0x8002,
-	CELL_GCM_CONSTANT_ALPHA = 0x8003,
+	CELL_GCM_CONSTANT_ALPHA           = 0x8003,
 	CELL_GCM_ONE_MINUS_CONSTANT_ALPHA = 0x8004,
 };
 
@@ -776,21 +765,21 @@ rsx::blend_factor rsx::to_blend_factor(u16 in)
 
 enum
 {
-	CELL_GCM_CLEAR = 0x1500,
-	CELL_GCM_AND = 0x1501,
-	CELL_GCM_AND_REVERSE = 0x1502,
-	CELL_GCM_COPY = 0x1503,
-	CELL_GCM_AND_INVERTED = 0x1504,
-	CELL_GCM_NOOP = 0x1505,
-	CELL_GCM_XOR = 0x1506,
-	CELL_GCM_OR = 0x1507,
-	CELL_GCM_NOR = 0x1508,
-	CELL_GCM_EQUIV = 0x1509,
-	CELL_GCM_OR_REVERSE = 0x150B,
+	CELL_GCM_CLEAR         = 0x1500,
+	CELL_GCM_AND           = 0x1501,
+	CELL_GCM_AND_REVERSE   = 0x1502,
+	CELL_GCM_COPY          = 0x1503,
+	CELL_GCM_AND_INVERTED  = 0x1504,
+	CELL_GCM_NOOP          = 0x1505,
+	CELL_GCM_XOR           = 0x1506,
+	CELL_GCM_OR            = 0x1507,
+	CELL_GCM_NOR           = 0x1508,
+	CELL_GCM_EQUIV         = 0x1509,
+	CELL_GCM_OR_REVERSE    = 0x150B,
 	CELL_GCM_COPY_INVERTED = 0x150C,
-	CELL_GCM_OR_INVERTED = 0x150D,
-	CELL_GCM_NAND = 0x150E,
-	CELL_GCM_SET = 0x150F,
+	CELL_GCM_OR_INVERTED   = 0x150D,
+	CELL_GCM_NAND          = 0x150E,
+	CELL_GCM_SET           = 0x150F,
 };
 
 rsx::logic_op rsx::to_logic_op(u16 in)
@@ -859,12 +848,12 @@ rsx::blit_engine::transfer_interpolator rsx::blit_engine::to_transfer_interpolat
 
 enum
 {
-	CELL_GCM_TRANSFER_OPERATION_SRCCOPY_AND = 0,
-	CELL_GCM_TRANSFER_OPERATION_ROP_AND = 1,
-	CELL_GCM_TRANSFER_OPERATION_BLEND_AND = 2,
-	CELL_GCM_TRANSFER_OPERATION_SRCCOPY = 3,
+	CELL_GCM_TRANSFER_OPERATION_SRCCOPY_AND     = 0,
+	CELL_GCM_TRANSFER_OPERATION_ROP_AND         = 1,
+	CELL_GCM_TRANSFER_OPERATION_BLEND_AND       = 2,
+	CELL_GCM_TRANSFER_OPERATION_SRCCOPY         = 3,
 	CELL_GCM_TRANSFER_OPERATION_SRCCOPY_PREMULT = 4,
-	CELL_GCM_TRANSFER_OPERATION_BLEND_PREMULT = 5,
+	CELL_GCM_TRANSFER_OPERATION_BLEND_PREMULT   = 5,
 };
 
 rsx::blit_engine::transfer_operation rsx::blit_engine::to_transfer_operation(u8 in)
@@ -883,19 +872,19 @@ rsx::blit_engine::transfer_operation rsx::blit_engine::to_transfer_operation(u8 
 
 enum
 {
-	CELL_GCM_TRANSFER_SCALE_FORMAT_A1R5G5B5 = 1,
-	CELL_GCM_TRANSFER_SCALE_FORMAT_X1R5G5B5 = 2,
-	CELL_GCM_TRANSFER_SCALE_FORMAT_A8R8G8B8 = 3,
-	CELL_GCM_TRANSFER_SCALE_FORMAT_X8R8G8B8 = 4,
-	CELL_GCM_TRANSFER_SCALE_FORMAT_CR8YB8CB8YA8 = 5,
-	CELL_GCM_TRANSFER_SCALE_FORMAT_YB8CR8YA8CB8 = 6,
-	CELL_GCM_TRANSFER_SCALE_FORMAT_R5G6B5 = 7,
-	CELL_GCM_TRANSFER_SCALE_FORMAT_Y8 = 8,
-	CELL_GCM_TRANSFER_SCALE_FORMAT_AY8 = 9,
+	CELL_GCM_TRANSFER_SCALE_FORMAT_A1R5G5B5         = 1,
+	CELL_GCM_TRANSFER_SCALE_FORMAT_X1R5G5B5         = 2,
+	CELL_GCM_TRANSFER_SCALE_FORMAT_A8R8G8B8         = 3,
+	CELL_GCM_TRANSFER_SCALE_FORMAT_X8R8G8B8         = 4,
+	CELL_GCM_TRANSFER_SCALE_FORMAT_CR8YB8CB8YA8     = 5,
+	CELL_GCM_TRANSFER_SCALE_FORMAT_YB8CR8YA8CB8     = 6,
+	CELL_GCM_TRANSFER_SCALE_FORMAT_R5G6B5           = 7,
+	CELL_GCM_TRANSFER_SCALE_FORMAT_Y8               = 8,
+	CELL_GCM_TRANSFER_SCALE_FORMAT_AY8              = 9,
 	CELL_GCM_TRANSFER_SCALE_FORMAT_EYB8ECR8EYA8ECB8 = 10,
 	CELL_GCM_TRANSFER_SCALE_FORMAT_ECR8EYB8ECB8EYA8 = 11,
-	CELL_GCM_TRANSFER_SCALE_FORMAT_A8B8G8R8 = 12,
-	CELL_GCM_TRANSFER_SCALE_FORMAT_X8B8G8R8 = 13,
+	CELL_GCM_TRANSFER_SCALE_FORMAT_A8B8G8R8         = 12,
+	CELL_GCM_TRANSFER_SCALE_FORMAT_X8B8G8R8         = 13,
 };
 
 rsx::blit_engine::transfer_source_format rsx::blit_engine::to_transfer_source_format(u8 in)
@@ -922,9 +911,9 @@ rsx::blit_engine::transfer_source_format rsx::blit_engine::to_transfer_source_fo
 enum
 {
 	// Destination Format conversions
-	CELL_GCM_TRANSFER_SURFACE_FORMAT_R5G6B5 = 4,
+	CELL_GCM_TRANSFER_SURFACE_FORMAT_R5G6B5   = 4,
 	CELL_GCM_TRANSFER_SURFACE_FORMAT_A8R8G8B8 = 10,
-	CELL_GCM_TRANSFER_SURFACE_FORMAT_Y32 = 11,
+	CELL_GCM_TRANSFER_SURFACE_FORMAT_Y32      = 11,
 };
 
 rsx::blit_engine::transfer_destination_format rsx::blit_engine::to_transfer_destination_format(u8 in)
@@ -967,7 +956,7 @@ rsx::blit_engine::context_dma rsx::blit_engine::to_context_dma(u32 in)
 
 enum
 {
-	CELL_GCM_USER_CLIP_PLANE_DISABLE = 0,
+	CELL_GCM_USER_CLIP_PLANE_DISABLE   = 0,
 	CELL_GCM_USER_CLIP_PLANE_ENABLE_LT = 1,
 	CELL_GCM_USER_CLIP_PLANE_ENABLE_GE = 2,
 };
@@ -985,7 +974,7 @@ rsx::user_clip_plane_op rsx::to_user_clip_plane_op(u8 in)
 
 enum
 {
-	CELL_GCM_FLAT = 0x1D00,
+	CELL_GCM_FLAT   = 0x1D00,
 	CELL_GCM_SMOOTH = 0x1D01,
 };
 
@@ -1002,8 +991,8 @@ rsx::shading_mode rsx::to_shading_mode(u32 in)
 enum
 {
 	CELL_GCM_POLYGON_MODE_POINT = 0x1B00,
-	CELL_GCM_POLYGON_MODE_LINE = 0x1B01,
-	CELL_GCM_POLYGON_MODE_FILL = 0x1B02,
+	CELL_GCM_POLYGON_MODE_LINE  = 0x1B01,
+	CELL_GCM_POLYGON_MODE_FILL  = 0x1B02,
 };
 
 rsx::polygon_mode rsx::to_polygon_mode(u32 in)
@@ -1016,4 +1005,3 @@ rsx::polygon_mode rsx::to_polygon_mode(u32 in)
 	}
 	fmt::throw_exception("Unknown polygon mode 0x%x" HERE, in);
 }
-
