@@ -730,7 +730,7 @@ rsx::blend_equation rsx::to_blend_equation(u16 in)
 	case CELL_GCM_FUNC_REVERSE_SUBTRACT_SIGNED: return rsx::blend_equation::reverse_substract_signed;
 	case CELL_GCM_FUNC_ADD_SIGNED: return rsx::blend_equation::add_signed;
 	case CELL_GCM_FUNC_REVERSE_ADD_SIGNED: return rsx::blend_equation::reverse_add_signed;
-	case 0: return rsx::blend_equation::add;
+	case 0: return rsx::blend_equation::min;
 
 	}
 	fmt::throw_exception("Unknown blend eq 0x%x" HERE, in);
